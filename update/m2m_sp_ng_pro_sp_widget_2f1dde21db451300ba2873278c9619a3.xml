@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE">
+        <sp_angular_provider display_value="spKBCategoryService">10eb7596c7033200b0b0409b9b97631c</sp_angular_provider>
+        <sp_widget display_value="Edge KB Category Page">e71d9621db451300ba2873278c9619d6</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-24 18:45:07</sys_created_on>
+        <sys_id>2f1dde21db451300ba2873278c9619a3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>spKBCategoryService.Edge KB Category Page</sys_name>
+        <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_2f1dde21db451300ba2873278c9619a3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-24 18:45:07</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+</record_update>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">bcc27d7ddb811300ba2873278c961946</sp_column>
+        <sp_widget display_value="Edge SC Shopping Cart V2">2f61f9f9db811300ba2873278c9619fc</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-25 10:18:39</sys_created_on>
+        <sys_id>02c2b1bddb811300ba2873278c96190b</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+        <sys_update_name>sp_instance_02c2b1bddb811300ba2873278c96190b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-25 10:24:57</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"cartTemplate": {
+		"value": "edge_large_shopping_cart.html",
+		"displayValue": "edge_large_shopping_cart.html"
+	},
+	"auto_update_cart": {
+		"value": "false",
+		"displayValue": "false"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=02c2b1bddb811300ba2873278c96190b"/>
+</record_update>

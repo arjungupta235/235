@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>edge_small_shopping_cart_v2.html</id>
+        <sp_widget display_value="Edge SC Shopping Cart">0bddd261db451300ba2873278c96192a</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-24 19:21:36</sys_created_on>
+        <sys_id>357562a5db451300ba2873278c961921</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>edge_small_shopping_cart_v2.html</sys_name>
+        <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+        <sys_update_name>sp_ng_template_357562a5db451300ba2873278c961921</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-24 19:21:48</sys_updated_on>
+        <template><![CDATA[<div class="panel">
+  <div class="panel-body" ng-if="c.data.cartItems.length > 0">
+    <ul class="media-list">
+      <li class="media" ng-repeat="item in c.data.cartItems track by item.sys_id">
+        <div class="media-left">
+          <a ng-href="?id=sc_cat_item&sys_id={{::item.sys_id}}&edit=cart">
+            <img ng-show="item.picture" ng-src="{{::item.picture}}" alt="{{::item.name}}" class="img-responsive item-image"/>
+          </a>
+        </div>
+        <div class="media-body">
+          <a ng-href="?id=sc_cat_item&sys_id={{::item.sys_id}}&edit=cart"><div class="media-heading">{{::item.name}}</div></a>
+          <p>{{::item.short_description}}</p>
+          <p class="quantity-price">
+            <span class="quantity" ng-if="c.showQuantity($index)">{{::item.quantity}}{{c.showPrice($index) || c.showRecurringPrice($index) ? ' x ' : ' '}}</span>
+            <span class="price" ng-if="c.showPrice($index)">{{::item.price}}</span>
+            <span class="recurring" ng-show="c.showRecurringPrice($index)">{{c.showPrice($index) ? '+ ' : ' '}}{{item.recurring_price + ' ' + item.recurring_frequency}}</span>
+          </p>
+        </div>
+        <div class="media-right">
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-clear" ng-click="c.removeItem($event, item)" aria-label="${Remove Item} {{::item.name}}" title="${Remove Item} {{::item.name}}">
+              <i class="fa fa-times-circle btn-remove" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+	<div ng-if="c.data.cart.cart_items.show_subtotal_price === 'true'" class="panel-footer align-right">
+		<label class="subtotal">${Total price}: {{c.data.cart.cart_items.subtotal_price}}</label>
+		<label ng-repeat="(key, value) in c.data.cart.recurring_subtotals" class="subtotal">+ {{value}} {{key}}</label>
+	</div>
+  </div>
+  <div class="panel-body" ng-show="c.data.cartItems.length == 0">
+    <div class="empty-state-content small-cart">
+      <span class="fa fa-shopping-cart small-cart"></span>
+      <div class="h4">${Your shopping cart is empty}</div>
+      <p>${Once you have added items to your shopping cart, you can check out from here.}</p>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="btn-group btn-group-justified" role="group">
+      <div class="btn-group" role="group">
+        <a type="button"
+           class="btn btn-default"
+           ng-href="?id=sc_cart">${View Cart}</a>
+      </div>
+      <div class="btn-group" role="group" ng-if="c.data.cartItems.length > 0">
+        <button ng-disabled="c.checkoutInProgress"
+                ng-click="c.triggerCheckout($event)"
+                class="btn btn-primary">
+          <span ng-show="!c.checkoutInProgress">${Checkout}</span>
+          <span ng-show="c.checkoutInProgress">${Ordering...}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_ng_template>
+</record_update>

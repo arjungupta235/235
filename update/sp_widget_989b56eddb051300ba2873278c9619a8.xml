@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {
+  /* widget controller */
+  var c = this;
+	c.show_recent = false;
+	
+	c.KEYS = {
+						DOWN:40,
+						LEFT:37,
+						RIGHT:39,
+						TAB:9,
+						UP:38
+					 }
+	
+	if (c.data.recentItems.length > 0)
+		c.show_recent = true;
+
+	c.changePanel = function(panel_name) {
+		if (c.show_recent) {
+			if (panel_name == 'popular')
+				c.show_recent = false;
+		} else {
+			if (panel_name == 'recent')
+				c.show_recent = true;
+		}
+	};
+	
+	c.switchTab = function($event, tab) {
+		var key = null;
+		if (event.keyCode === c.KEYS.LEFT || event.keyCode === c.KEYS.UP)
+			key = c.KEYS.LEFT;
+		else if (event.keyCode === c.KEYS.RIGHT || event.keyCode === c.KEYS.DOWN)
+			key = c.KEYS.RIGHT;
+		else if (event.keyCode === c.KEYS.TAB) {
+			return;
+		}
+		if (key === null)
+			return;
+
+		c.show_recent = !c.show_recent;
+		if (c.show_recent)
+			$('a.recent').focus();
+		else
+			$('a.popular').focus();
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.sc-tab-a {
+ 	 color: $primary;
+	 border: 0;
+   border-bottom: 3px solid $primary;
+   background-color: transparent;
+}
+
+.nav &gt; li.item {
+  text-align: center;
+}
+
+.recent-widget {
+  .panel-heading {
+			padding-bottom : 0px;
+	}
+  
+  .row {
+    margin-left: 0;
+    margin-right:0;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .item-card {
+    margin-bottom: 15px;
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>edge_recent_and_popular_items</id>
+        <internal>false</internal>
+        <link/>
+        <name>Edge Recent and Popular Items</name>
+        <option_schema>[{"hint":"Number of item cards in the widget","name":"limit","section":"Presentation","default_value":"8","label":"Number of Items","type":"integer"},{"hint":"Show my recent items by view or request","name":"recent_by","section":"Behavior","default_value":"view","label":"My Recent Items By","type":"choice","choices":[{"label":"View","value":"view"},{"label":"Request","value":"request"}]}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+	
+	var limit = options.limit || 8;
+	var recent_by = options.recent_by || 'view';
+
+	var recent = new GlideAggregate('sp_log');
+	recent.addAggregate('COUNT', 'id');
+	if (recent_by === 'view')
+		recent.addEncodedQuery('userDYNAMIC90d1921e5f510100a9ad2572f2b477fe^type=Cat Item View^sys_created_onONThis quarter@javascript:gs.beginningOfThisQuarter()@javascript:gs.endOfThisQuarter()');
+	else
+				recent.addEncodedQuery('userDYNAMIC90d1921e5f510100a9ad2572f2b477fe^type=Cat Item Request^sys_created_onONThis quarter@javascript:gs.beginningOfThisQuarter()@javascript:gs.endOfThisQuarter()');
+	recent.groupBy('id');
+	recent.orderByAggregate('COUNT', 'id');
+	recent.query();
+	var recentItems = [];
+	var catalog = $sp.getValue('sc_catalog');
+
+	data.showPrices = $sp.showCatalogPrices();
+	
+	while (recent.next() && recentItems.length < limit) {
+		var catalogItemJS = new sn_sc.CatItem(recent.getValue('id'));
+		if (!catalogItemJS.canView(gs.isMobile()) || !catalogItemJS.isVisibleServicePortal())
+			continue;
+		var item = {};
+		var catItemDetails = catalogItemJS.getItemSummary();
+		var inCatalog = false;
+		for (var i=0; i<catItemDetails.catalogs.length; i++) {
+			if (catItemDetails.catalogs[i].sys_id == catalog) {
+				inCatalog = true;
+				break;
+			}
+		}
+		if (inCatalog) {
+			item.name = catItemDetails.name;
+			item.short_description = catItemDetails.short_description;
+			item.picture = catItemDetails.picture;
+			item.price = catItemDetails.price;
+			item.sys_id = catItemDetails.sys_id;
+			item.hasPrice = item.price != 0;
+			item.page = catItemDetails.type == 'order_guide'? 'sc_cat_item_guide' : 'sc_cat_item';
+			recentItems.push(item);
+		}
+	}
+	data.recentItems = recentItems;
+	
+	data.popularItems = getPopularItems();
+	
+	function getPopularItems () {
+			var catalog = $sp.getValue('sc_catalog');
+			var limit = options.limit || 8;
+			var items = [];
+			var catItems = [];
+		
+			var count = new GlideAggregate('sc_req_item');
+			count.addAggregate('COUNT','cat_item');
+			count.groupBy('cat_item');
+			count.addQuery('cat_item.sys_class_name', 'NOT IN', 'sc_cat_item_guide,sc_cat_item_wizard,sc_cat_item_content');
+			count.addQuery('cat_item.sc_catalogs', 'IN', catalog);
+			count.addEncodedQuery('cat_item.hide_sp=false^ORcat_item.hide_spISEMPTY');
+			count.orderByAggregate('COUNT', 'cat_item');
+			count.query();
+			while (count.next() && items.length < limit) {
+				var catalogItemJS = new sn_sc.CatItem(count.cat_item.sys_id);
+					if (!catalogItemJS.canView(gs.isMobile()) || !catalogItemJS.isVisibleServicePortal())
+						continue;
+				var item = {};
+				var catItemDetails = catalogItemJS.getItemSummary();
+				
+				item.order = 0 - count.getAggregate('COUNT', 'cat_item');
+				item.name = catItemDetails.name;
+				item.short_description = catItemDetails.short_description;
+				item.picture = catItemDetails.picture;
+				item.price = catItemDetails.price;
+				item.sys_id = catItemDetails.sys_id;
+				item.hasPrice = item.price != 0;
+				item.page = catItemDetails.type == 'order_guide'? 'sc_cat_item_guide' : 'sc_cat_item';
+				catItems.push(item);
+			}
+
+
+			var producers = 0;
+			var prodItems = [];
+			count = new GlideAggregate('sc_item_produced_record');
+			count.addQuery('producer.sc_catalogs', 'IN', catalog);
+			count.addEncodedQuery('producer.hide_sp=false^ORproducer.hide_spISEMPTY');
+			count.addAggregate('COUNT', 'producer');
+			count.groupBy('producer');
+			count.orderByAggregate('COUNT', 'producer');
+			count.query();
+			while (count.next() && producers < limit) {
+					var catalogItemJS = new sn_sc.CatItem(count.getValue('producer'));
+					if (!catalogItemJS.canView(gs.isMobile()) || !catalogItemJS.isVisibleServicePortal())
+						continue;
+					var catItemDetails = catalogItemJS.getItemSummary();
+					var item = {};
+
+					item.order = 0 - count.getAggregate('COUNT', 'producer');
+					item.name = catItemDetails.name;
+					item.short_description = catItemDetails.short_description;
+					item.picture = catItemDetails.picture;
+					item.price = catItemDetails.price;
+				  item.hasPrice = item.price != 0;
+					item.sys_id = catItemDetails.sys_id;
+					item.page = catItemDetails.type == 'order_guide'? 'sc_cat_item_guide' : 'sc_cat_item';
+					prodItems.push(item);
+					producers++;
+			}
+			
+			if (catItems.length == 0)
+				return prodItems;
+			if (prodItems.length == 0)
+				return catItems;
+			
+			var items = [];
+			for (var i=0; i<limit/2; i++) {
+				if (catItems.length > i)
+					items.push(catItems[i])
+			}
+			for (var i=0; i<limit/2; i++) {
+				if (prodItems.length > i)
+					items.push(prodItems[i])
+			}
+			
+			return items;
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-24 18:38:21</sys_created_on>
+        <sys_id>989b56eddb051300ba2873278c9619a8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Edge Recent and Popular Items</sys_name>
+        <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+        <sys_update_name>sp_widget_989b56eddb051300ba2873278c9619a8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-24 18:38:21</sys_updated_on>
+        <template><![CDATA[<div class="recent-widget">
+  <div class="panel panel-default">
+ 	<div class="panel-heading pad-bottom">
+    	<ul class="nav nav-tabs" style="border-bottom : 0px" role="tablist">
+      	<li class="item" ng-if="data.recentItems.length > 0" role="tab" tabindex="-1" ng-click="c.changePanel('recent')" ng-keydown="c.switchTab($event, 'recent')">
+        	<a ng-class="{'sc-tab-a' : c.show_recent}" href="javascript:void(0)" class="recent">
+          	<span> ${My Recent Items} </span>
+          </a>
+        </li>  
+        <li class="item" role="tab" tabindex="-1" ng-keydown="c.switchTab($event, 'popular')" ng-click="c.changePanel('popular')" >
+        	<a ng-class="{'sc-tab-a' : !c.show_recent}" href="javascript:void(0)" class="popular">
+          	<span > ${Popular Items} </span>
+          </a>
+        </li>  
+    	</ul>
+  </div>
+    
+ <div class="panels-container" ng-if="c.show_recent">
+   <div class="row">
+     <div class="col-sm-6 col-md-3" ng-repeat="item in data.recentItems track by item.sys_id">
+       <div class="panel panel-default item-card">
+         <a href="?id={{::item.page}}&sys_id={{::item.sys_id}}" class="panel-body block">
+           <div class="overflow-100">
+             <h2 class="h4 m-t-none m-b-xs text-overflow-ellipsis" title="{{::item.name}}">{{::item.name}}</h2>
+             <img ng-src="{{::item.picture}}" ng-if="::item.picture" class="m-r-sm m-b-sm item-image pull-left" alt="{{::item.name}}" role="presentation" />
+             <div class="text-muted item-short-desc">{{::item.short_description}}</div>
+           </div>
+         </a>
+         <div class="panel-footer">
+           <a href="?id={{::item.page}}&sys_id={{item.sys_id}}" class="pull-left text-muted" tabindex="-1">${View Details}</a> 
+           <span ng-if="data.showPrices && item.hasPrice" class="pull-right item-price font-bold">{{::item.price}}</span> &nbsp;
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+    
+ <div class="panels-container" ng-if="!c.show_recent">
+   <div class="row">
+     <div class="col-sm-6 col-md-3" ng-repeat="item in data.popularItems | orderBy: 'order' track by item.sys_id">
+       <div class="panel panel-default item-card">
+         <a href="?id={{::item.page}}&sys_id={{::item.sys_id}}" class="panel-body block">
+           <div class="overflow-100">
+             <h2 class="h4 m-t-none m-b-xs text-overflow-ellipsis" title="{{::item.name}}">{{::item.name}}</h2>
+             <img ng-src="{{::item.picture}}" ng-if="::item.picture" class="m-r-sm m-b-sm item-image pull-left" alt="{{::item.name}}" role="presentation" />
+             <div class="text-muted item-short-desc">{{::item.short_description}}</div>
+           </div>
+         </a>
+         <div class="panel-footer">
+           <a href="?id={{::item.page}}&sys_id={{item.sys_id}}" class="pull-left text-muted" tabindex="-1">${View Details}</a> 
+           <span ng-if="data.showPrices && item.hasPrice" class="pull-right item-price font-bold">{{::item.price}}</span> &nbsp;
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+   
+    
+</div>]]></template>
+    </sp_widget>
+</record_update>

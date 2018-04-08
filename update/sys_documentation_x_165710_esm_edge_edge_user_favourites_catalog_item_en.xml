@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="catalog_item" label="Catalog Item" language="en" table="x_165710_esm_edge_edge_user_favourites">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>catalog_item</element>
+            <help/>
+            <hint/>
+            <label>Catalog Item</label>
+            <language>en</language>
+            <name>x_165710_esm_edge_edge_user_favourites</name>
+            <plural>Catalog Items</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-03-25 16:06:01</sys_created_on>
+            <sys_id>2a428fb9db451300ba2873278c9619f1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Catalog Item</sys_name>
+            <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+            <sys_update_name>sys_documentation_x_165710_esm_edge_edge_user_favourites_catalog_item_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-03-25 16:06:01</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>
