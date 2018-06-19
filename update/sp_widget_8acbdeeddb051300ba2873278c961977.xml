@@ -152,7 +152,7 @@
         <internal>false</internal>
         <link/>
         <name>Edge SC Category</name>
-        <option_schema>[{"name":"hide_xs","default_value":false,"section":"Behavior","label":"Hide at XS","type":"boolean"},{"name":"omit_badges","section":"Behavior","label":"Omit badges","type":"boolean"},{"name":"check_can_view","default_value":"true","section":"Behavior","label":"Check canView per item (may impact performance for large catalogs)","type":"boolean"},{"hint":"Choose between a flattened and a nested category structure","name":"category_layout","section":"Presentation","label":"Category Layout","type":"choice","choices":[{"label":"Flat","value":"Flat"},{"label":"Nested","value":"Nested"}]},{"displayValue":"Page","name":"page","section":"Data","label":"page","type":"reference","value":"sp_page","ed":{"reference":"sp_page"}},{"hint":"Number of categories to load on page load","name":"number_of_categories_to_load","section":"Data","default_value":"15","label":"Number of categories to load","type":"integer"}]</option_schema>
+        <option_schema>[{"name":"hide_xs","default_value":false,"section":"Behavior","label":"Hide at XS","type":"boolean"},{"name":"omit_badges","section":"Behavior","label":"Omit badges","type":"boolean"},{"name":"check_can_view","default_value":"true","section":"Behavior","label":"Check canView per item (may impact performance for large catalogs)","type":"boolean"},{"hint":"Choose between a flattened and a nested category structure","name":"category_layout","section":"Presentation","label":"Category Layout","type":"choice","choices":[{"label":"Flat","value":"Flat"},{"label":"Nested","value":"Nested"}]},{"displayValue":"Page","name":"page","section":"Data","label":"page","type":"string","value":"sp_page","ed":{"reference":"sp_page"}},{"hint":"Number of categories to load on page load","name":"number_of_categories_to_load","section":"Data","default_value":"15","label":"Number of categories to load","type":"integer"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
@@ -162,7 +162,7 @@
 	data.categoriesList = [];
 	data.showAll = gs.getMessage("Show All");
 	data.pleaseWait = gs.getMessage("Please wait... fetching categories");
-	var categoryId = JSUtil.nil($sp.getParameter('sys_id')) ? "" : $sp.getParameter('sys_id') + "";
+	var categoryId = global.JSUtil.nil($sp.getParameter('sys_id')) ? "" : $sp.getParameter('sys_id') + "";
 	var catalogID = $sp.getValue('sc_catalog') + "";
 	var viewType = '';
 	var checkCanView = false;
@@ -193,7 +193,7 @@
 	if (input && input.getAll)
 		windowSize = -1 ;
 	data.total = totalCount;
-	windowSize = JSUtil.nil(windowSize) ? 10 : windowSize;
+	windowSize = global.JSUtil.nil(windowSize) ? 10 : windowSize;
 	data.windowSize = windowSize;
 	var itemIndex = 0;
 	if (totalCount == 0) {
@@ -278,14 +278,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-03-24 18:39:17</sys_created_on>
         <sys_id>8acbdeeddb051300ba2873278c961977</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Edge SC Category</sys_name>
         <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
         <sys_update_name>sp_widget_8acbdeeddb051300ba2873278c961977</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-03-24 18:39:17</sys_updated_on>
+        <sys_updated_on>2018-06-18 15:51:34</sys_updated_on>
         <template><![CDATA[<div ng-class="{'hidden-xs' : hideCategoryWidgetInXS}" class="panel panel-{{::options.color}} category-widget no-border">
   <div class="panel-heading">
     <h1 class="h4 panel-title">

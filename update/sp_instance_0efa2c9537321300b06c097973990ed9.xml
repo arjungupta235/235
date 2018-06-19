@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="2">743f605937321300b06c097973990ef8</sp_column>
+        <sp_widget display_value="Edge SC Category Page">1afb1221db451300ba2873278c96199a</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-06-18 15:37:48</sys_created_on>
+        <sys_id>0efa2c9537321300b06c097973990ed9</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+        <sys_update_name>sp_instance_0efa2c9537321300b06c097973990ed9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-06-18 15:57:08</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"click_event_name": {
+		"value": "",
+		"displayValue": ""
+	},
+	"limit_item": {
+		"value": null,
+		"displayValue": ""
+	},
+	"show_items_from_child": {
+		"value": "true",
+		"displayValue": "true"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=0efa2c9537321300b06c097973990ed9"/>
+</record_update>
