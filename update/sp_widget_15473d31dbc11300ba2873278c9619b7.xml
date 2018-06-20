@@ -4,28 +4,13 @@
         <category>custom</category>
         <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
         <controller_as>c</controller_as>
-        <css>html, body {
-  width: 100%;
-  height: 100%;
-}
+        <css>
 
-#homepage-search {
-  position: relative;
-  ;
-  
-  &amp;:before {
-    content: '';
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+.sec1 {
+ 
     background-size: cover;
-background: #00c3ff;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #ffff1c, #00c3ff);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #ffff1c, #00c3ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background-color: #b82601;  /* fallback for old browsers */
 
-    opacity: .8; 
   }
 }</css>
         <data_table>sp_instance</data_table>
@@ -47,19 +32,29 @@ background: linear-gradient(to right, #ffff1c, #00c3ff); /* W3C, IE 10+/ Edge, F
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-03-25 10:38:15</sys_created_on>
         <sys_id>15473d31dbc11300ba2873278c9619b7</sys_id>
-        <sys_mod_count>25</sys_mod_count>
+        <sys_mod_count>35</sys_mod_count>
         <sys_name>Edge Homepage Search</sys_name>
         <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
         <sys_update_name>sp_widget_15473d31dbc11300ba2873278c9619b7</sys_update_name>
-        <sys_updated_by>vaidehi.chauhan</sys_updated_by>
-        <sys_updated_on>2018-04-08 19:43:13</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-06-19 14:25:01</sys_updated_on>
         <template><![CDATA[<div id="homepage-search" class="hidden-xs wrapper-xl  ">
-  <div class="wrapper-xl">
-  	<h1 class="text-center text-4x m-b-lg sp-tagline-color" ng-bind="options.title"></h1>
+  <div class="wrapper-xl row">
+    <div class="col-md-6 sec1">
+  
+  	<h1 class="text-center " ng-bind="options.title"></h1>
   	<h4 ng-if="options.short_description" class="text-center m-b-lg sp-tagline-color" ng-bind="options.short_description"></h4>
   	<sp-widget widget="data.typeAheadSearch" />
+      </div>
+    
+    <div class="col-md-6 sec2">
+  
+  	<h1 class="text-center " ng-bind="options.title"></h1>
+  	<h4 ng-if="options.short_description" class="text-center m-b-lg sp-tagline-color" ng-bind="options.short_description"></h4>
+  	<sp-widget widget="data.typeAheadSearch" />
+      </div>
   </div>
 </div>]]></template>
     </sp_widget>
