@@ -3,6 +3,8 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[function ($scope, spUtil, $rootScope, $location, $timeout, $window) {
+	
+	var c = this;
 	$scope.hideItemWidget = !$scope.data.category_id;
 	if ($scope.data.category) {
 		if (!$scope.data.categories)
@@ -18,6 +20,24 @@
 	spUtil.setSearchPage('sc');
 	}
 
+	c.renderCatalogItemWidget =function(item) {
+		c.data.openItem = item.sys_id;
+		c.catalogItemWidget = null;
+		spUtil.get("edge_sc_catalog_item_modal", {'sys_id': item.sys_id}).then(function(response){
+			c.catalogItemWidget = response;
+		});
+	}
+	
+		c.subCatSelected =function(category) {
+		//$scope.server.update().then(function (){
+			$location.search('sys_id', category.sys_id);
+				$location.search('id', 'edge_test');
+	//	})
+				
+		
+	}
+		
+	
 	$scope.showCategories =  function() {
 		$scope.hideItemWidget = true;
 		$rootScope.$broadcast("$sp.service_catelog.show.categories_widget");
@@ -128,6 +148,10 @@
   color: $primary;
 }
 
+#catModal{
+ z-index: 10 !important; 
+}
+
 .item-table {
   background-color: #fff;
    tr {
@@ -158,7 +182,7 @@
         <internal>false</internal>
         <link/>
         <name>Edge SC Category Page</name>
-        <option_schema>[{"name":"click_event_name","default_value":"$sp.cat_item_list.click","section":"other","label":"Click event name","type":"string"},{"hint":"Number of items to display per page","name":"limit_item","default_value":"15","section":"other","label":"Number of items per page","type":"integer"},{"hint":"Show items from child categories along with the items of the present category","name":"show_items_from_child","section":"other","default_value":"false","label":"Show items from Child Categories","type":"boolean"}]</option_schema>
+        <option_schema>[{"name":"click_event_name","default_value":"$sp.cat_item_list.click","section":"other","label":"Click event name","type":"string"},{"hint":"Number of items to display per page","name":"limit_item","default_value":"15","section":"other","label":"Number of items per page","type":"integer"},{"hint":"Show items from child categories along with the items of the present category","name":"show_items_from_child","section":"other","default_value":"false","label":"Show items from Child Categories","type":"boolean"},{"name":"page","section":"other","label":"Page","type":"string"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
@@ -170,7 +194,7 @@
 	data.sc_catalog_page = $sp.getDisplayValue("sc_catalog_page") || "sc_home";
 	data.sc_category_page = $sp.getDisplayValue("sc_category_page") || "sc_category";
 	data.sc_catalog = $sp.getDisplayValue("sc_catalog");
-	
+
 	if (gs.nil(data.category_id)) {
 		 data.items = getPopularItems();
 		 data.show_popular_item = true;
@@ -179,7 +203,7 @@
 									 description: ''};
 		return;
 	}
-	
+
 	data.show_popular_item = false;
 
 	// Does user have permission to see this category?
@@ -191,9 +215,10 @@
 	}
 	data.category = {title: categoryJS.getTitle(),
 									 description: categoryJS.getDescription()};
-    
+
 	//var catalog = $sp.getValue('sc_catalog');
-	var catalog = 'e0d08b13c3330100c8b837659bba8fb4';
+	//var catalog = 'e0d08b13c3330100c8b837659bba8fb4';
+	var catalog = $sp.getPortalRecord().sys_catalog;
 	var scRecord = new sn_sc.CatalogSearch().search(catalog, categoryId, '', false, options.show_items_from_child != 'true');
 	scRecord.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard');
 	scRecord.addEncodedQuery('hide_sp=false^ORhide_spISEMPTY');
@@ -203,19 +228,19 @@
 
 	var items = data.items = [];
 	var count = 1;
-	
+
 	data.limit = 9;
 	if (input && input.new_limit)
 		data.limit = input.new_limit;
 	else if (options.limit_item)
 		data.limit = options.limit_item;
-	
+
 	while (scRecord.next() && count <= data.limit) {
 		var catalogItemJS = new sn_sc.CatItem(scRecord.getUniqueValue());
 		if (!catalogItemJS.canView() || !catalogItemJS.isVisibleServicePortal())
 			continue;
 		var catItemDetails = catalogItemJS.getItemSummary();
-		
+
 		var item = {};
 		item.name = catItemDetails.name;
 		item.short_description = catItemDetails.short_description;
@@ -243,11 +268,11 @@
 		items.push(item);
 		count ++;
 	}
-	
+
 	data.total_item = scRecord.getRowCount();
-    
+
 	data.more_msg = gs.getMessage("{0} of {1}", [data.limit, data.total_item]);
-    
+
 	data.categories = [];
 	while(categoryJS && categoryJS.getParent()) {
 		var parentId =  categoryJS.getParent();
@@ -258,13 +283,49 @@
 		};
 		data.categories.unshift(category);
 	}
+
 	
+	var categoryJSforSUb = new sn_sc.CatCategory(categoryId);
+	data.subCategories = categoryJSforSUb.getViewableSubCategories();
+	if(data.subCategories.length > 0){
+		data.showSubCats = true;
+	}
+	else {
+		data.showSubCats = false;
+	}
+	/*
+	var subCatList = [];
+	var catGR = new GlideRecord('sc_category');
+	catGR.addQuery('parent',data.category_id);
+	catGR.addQuery('active',true);
+	catGR.query();
+	while(catGR.next()){
+		if(catGR.canRead()){
+			var subCat = {};
+			subCat.title = catGR.getValue('title');
+			subCat.id = catGR.getValue('sys_id');
+			subCatList.push(subCat);
+		}
+	}
+	
+	data.subCategories = subCatList;
+	if(subCatList.length > 0){
+		data.showSubCats = true;
+	}
+	else {
+		data.showSubCats = false;
+	}
+	
+	*/
+	
+	
+
 	function getPopularItems () {
 			//var catalog = $sp.getValue('sc_catalog');
 	var catalog = 'e0d08b13c3330100c8b837659bba8fb4';
-			var limit = 6;	
+			var limit = 6;
 			var items = [];
-		
+
 			var count = new GlideAggregate('sc_req_item');
 			count.addAggregate('COUNT','cat_item');
 			count.groupBy('cat_item');
@@ -279,7 +340,7 @@
 						continue;
 				var item = {};
 				var catItemDetails = catalogItemJS.getItemSummary();
-				
+
 				item.order = 0 - count.getAggregate('COUNT', 'cat_item');
 				item.name = catItemDetails.name;
 				item.short_description = catItemDetails.short_description;
@@ -320,7 +381,7 @@
 			}
 			return items;
 	}
-	
+
 })();
 ]]></script>
         <servicenow>false</servicenow>
@@ -328,34 +389,68 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-03-24 18:40:07</sys_created_on>
         <sys_id>1afb1221db451300ba2873278c96199a</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>115</sys_mod_count>
         <sys_name>Edge SC Category Page</sys_name>
         <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
         <sys_update_name>sp_widget_1afb1221db451300ba2873278c96199a</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-06-18 15:44:30</sys_updated_on>
+        <sys_updated_on>2018-06-23 16:36:40</sys_updated_on>
         <template><![CDATA[<div class="m-t-sm " ng-class="{'hidden-xs' : hideItemWidget, 'm-l-sm': !isMobile}">
   <h4 ng-if="data.error">{{data.error}}</h4>
   <div ng-init="spSearch.targetCatalog()">
     <div class="row">
-      <div class="col-xs-9">
-        	<a ng-click="showCategories()" class="visible-xs m-b-sm pointer" aria-label="${All Categories}">
+      <div class="col-xs-12">
+        	
+        <a ng-click="showCategories()" class="visible-xs m-b-sm pointer" aria-label="${All Categories}">
             <i class="fa fa-chevron-left m-r-xs"></i> ${All Categories}
         	</a>
+        
+        <div class='col-xs-3'>
+          
+            {{::data.category.homepage_image}}
+          
+        </div>
+        
+        <div class='col-xs-9'>
           <h1 class="h4 m-t-none break-word" aria-label="{{data.category}} ${Category}">{{::data.category.title}}</h1>
         	<p class="hidden-xs break-word">
             {{::data.category.description}}
           </p>
+        </div> 
       </div>
-      <div class="col-xs-3" ng-if="!isMobile">
+    </div>     
+        
+        
+      
+        <div ng-show='{{data.showSubCats}}' class='row panel panel-default b' style='padding:10px'>
+        <h4  class='col-md-5'>
+          Further drilldown to these categories:
+        </h4>
+        <span  ng-repeat='subCat in ::data.subCategories'>
+          <button class='btn btn-primary btn-md' ng-click='c.subCatSelected(subCat)'>{{subCat.title}}</button>
+          </span>
+          
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        <div class='row' ng-if="!isMobile">
+          <div class=" col-xs-9">
+          </div>
+      <div class=" col-xs-3" ng-if="!isMobile">
         <div class="pull-right padder-t-sm text-lg toggle" ng-show="!data.error && data.items.length > 0">
           <i class="fa fa-th" ng-click="changeView('card')" aria-label="${Card View}" ng-class="{'active' : view == 'card'}" uib-tooltip="${Card View}" tooltip-placement="top" tooltip-enable="!isTouchDevice()" tooltip-append-to-body="true" aria-label="${Card View}" tabindex="0"></i>
           <span class="m-l-sm m-r-sm "> | </span>
           <i class="fa fa-list-ul" ng-click="changeView('grid')" aria-label="${Grid View}" ng-class="{'active' : view == 'grid'}" uib-tooltip="${Grid View}" tooltip-placement="top" tooltip-enable="!isTouchDevice()" tooltip-append-to-body="true" aria-label="${Grid View}" tabindex="0"></i>
         </div>
        </div>
+        </div>
     </div>
     <div class="row">
       <div class="col-sm-6 col-md-4" ng-if="!data.items.length && !data.error">
@@ -370,7 +465,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="item in data.items | orderBy: 'order' track by item.sys_id" ng-click="onClick($event, item)" ng-init="startItemList()">
+      <!--    <tr ng-repeat="item in data.items | orderBy: 'order' track by item.sys_id" ng-click="onClick($event, item)" ng-init="startItemList()">-->
+            <tr ng-repeat="item in data.items | orderBy: 'order' track by item.sys_id"  ng-init="startItemList()" data-toggle="modal"  data-target="#catModal" ng-click='c.renderCatalogItemWidget(item)'>
             <td>
               <img ng-src="{{::item.picture}}?t=small" ng-if="item.picture" alt="{{::item.name}}" class="m-r-sm m-b-sm item-image pull-left"/>
               <div class="break-word">
@@ -383,9 +479,10 @@
         </tbody>
       </table> 
       <div ng-if="view == 'card'">
-      	<div class="col-sm-6 col-md-4" ng-repeat="item in data.items | orderBy: 'order' track by item.sys_id" ng-init="startItemList()">
+      	<div class="col-sm-6 col-md-4" ng-repeat="item in data.items | orderBy: 'order' track by item.sys_id" ng-init="startItemList()" data-toggle="modal"  data-target="#catModal" ng-click='c.renderCatalogItemWidget(item)'>
         <div class="panel panel-{{::options.color}} b">
-          <a target="{{::item.target}}" ng-href="{{::getItemHREF(item)}}" ng-click="onClick($event, item)" class="panel-body block">
+          <a data-target="#catModal" class="panel-body block">
+            <!--  <a target="{{::item.target}}" ng-href="{{::getItemHREF(item)}}" ng-click="onClick($event, item)" class="panel-body block"> -->
             <div class="overflow-100">
               <h2 class="h4 m-t-none m-b-xs text-overflow-ellipsis" title="{{::item.name}}" style="padding-bottom:1px">{{::item.name}}<span ng-if="item.content_type == 'external'" aria-label="${External Link}"> ➚</span></h2>
               <img ng-src="{{::item.picture}}?t=small" ng-if="item.picture" alt="{{::item.name}}" class="m-r-sm m-b-sm item-image pull-left" />
@@ -414,6 +511,26 @@
         </button>
       </div>
   </div>
+</div>
+
+
+<div class="modal fade" id="catModal" role="dialog" data-backdrop="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Submit Your Request</h4>
+        </div>
+        <div class="modal-body">
+          <sp-widget  widget="c.catalogItemWidget" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a aria-hidden="true" ng-if="c.data.openItem.sys_class_name != 'sc_cat_item_content' || item.content_type == 'kb' || item.content_type == 'literal'"  ng-href="?id={{::options.page}}&sys_id={{c.data.openItem}}" class="pull-left text-muted" tabindex="-1"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a>
+            <a aria-hidden="true" ng-if="c.data.openItem.sys_class_name == 'sc_cat_item_content' && item.content_type == 'external'"  ng-href="?id={{::options.page}}&sys_id={{c.data.openItem}}" target="_blank" class="pull-left text-muted" tabindex="-1"><i class="fa fa-arrows-alt" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
 </div>]]></template>
     </sp_widget>
 </record_update>

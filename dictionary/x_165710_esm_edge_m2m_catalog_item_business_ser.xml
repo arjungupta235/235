@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Esm Edge M2m Catalog Item Business Ser" max_length="40" name="x_165710_esm_edge_m2m_catalog_item_business_ser" type="collection">
+        <element label="Business Service" max_length="32" name="business_service" reference="cmdb_ci_service" type="reference"/>
+        <element label="Catalog Item" max_length="32" name="catalog_item" reference="sc_cat_item" type="reference"/>
+        <index name="index">
+            <element name="catalog_item"/>
+        </index>
+        <index name="index2">
+            <element name="business_service"/>
+        </index>
+    </element>
+</database>

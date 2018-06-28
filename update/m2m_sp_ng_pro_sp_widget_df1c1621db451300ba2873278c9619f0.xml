@@ -2,7 +2,7 @@
 <record_update table="m2m_sp_ng_pro_sp_widget">
     <m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE">
         <sp_angular_provider display_value="scBindHtmlCompile">631d65a287300300e0ef0cf888cb0ba3</sp_angular_provider>
-        <sp_widget display_value="Edge SC Catalog Item">031c1621db451300ba2873278c9619e7</sp_widget>
+        <sp_widget display_value="Edge SC Catalog Item Form">031c1621db451300ba2873278c9619e7</sp_widget>
         <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-03-24 18:40:44</sys_created_on>

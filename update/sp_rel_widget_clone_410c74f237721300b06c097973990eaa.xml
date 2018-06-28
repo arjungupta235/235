@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update table="sp_rel_widget_clone">
     <sp_rel_widget_clone action="INSERT_OR_UPDATE">
-        <child display_value="Edge SC Catalog Item Form">031c1621db451300ba2873278c9619e7</child>
+        <child display_value="Edge SC Catalog Item Modal">f00c30f237721300b06c097973990ec2</child>
         <cloned>2018-03-24 18:40:44</cloned>
         <last_validated>2018-03-24 18:40:44</last_validated>
         <parent display_value="SC Catalog Item">3c29786e87133200e0ef0cf888cb0bdf</parent>
@@ -942,15 +942,15 @@
 &lt;now-message key="Added item to shopping cart" value="${Added item to shopping cart}"/&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload>
         <sys_class_name>sp_rel_widget_clone</sys_class_name>
         <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2018-03-24 18:40:44</sys_created_on>
-        <sys_id>df1c1621db451300ba2873278c9619f2</sys_id>
+        <sys_created_on>2018-06-23 08:43:10</sys_created_on>
+        <sys_id>410c74f237721300b06c097973990eaa</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>031c1621db451300ba2873278c9619e7</sys_name>
+        <sys_name>f00c30f237721300b06c097973990ec2</sys_name>
         <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
-        <sys_update_name>sp_rel_widget_clone_df1c1621db451300ba2873278c9619f2</sys_update_name>
+        <sys_update_name>sp_rel_widget_clone_410c74f237721300b06c097973990eaa</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-03-24 18:40:44</sys_updated_on>
+        <sys_updated_on>2018-06-23 08:43:10</sys_updated_on>
     </sp_rel_widget_clone>
 </record_update>

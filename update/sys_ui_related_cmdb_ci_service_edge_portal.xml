@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_related sys_domain="global" table="cmdb_ci_service" version="2" view="edge_portal">
+        <sys_ui_related_list_entry action="INSERT_OR_UPDATE">
+            <filter/>
+            <list_id display_value="Business Service - Edge Portal" name="cmdb_ci_service" related_list="NULL" sys_domain="global" view="f6525d3637b21300b06c097973990eaa">b9e2117637b21300b06c097973990ee0</list_id>
+            <order_by/>
+            <position>0</position>
+            <related_list>cmdb_subscriber.item</related_list>
+            <sys_class_name>sys_ui_related_list_entry</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-06-23 10:23:09</sys_created_on>
+            <sys_id>39e2117637b21300b06c097973990ee1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-06-23 10:23:09</sys_updated_on>
+        </sys_ui_related_list_entry>
+        <sys_ui_related_list_entry action="INSERT_OR_UPDATE">
+            <filter/>
+            <list_id display_value="Business Service - Edge Portal" name="cmdb_ci_service" related_list="NULL" sys_domain="global" view="f6525d3637b21300b06c097973990eaa">b9e2117637b21300b06c097973990ee0</list_id>
+            <order_by/>
+            <position>1</position>
+            <related_list>service_offering.parent</related_list>
+            <sys_class_name>sys_ui_related_list_entry</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-06-23 10:23:09</sys_created_on>
+            <sys_id>b1e2117637b21300b06c097973990ee2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-06-23 10:23:09</sys_updated_on>
+        </sys_ui_related_list_entry>
+        <sys_ui_related_list_entry action="INSERT_OR_UPDATE">
+            <filter/>
+            <list_id display_value="Business Service - Edge Portal" name="cmdb_ci_service" related_list="NULL" sys_domain="global" view="f6525d3637b21300b06c097973990eaa">b9e2117637b21300b06c097973990ee0</list_id>
+            <order_by/>
+            <position>2</position>
+            <related_list>x_165710_esm_edge_m2m_catalog_item_business_ser.business_service</related_list>
+            <sys_class_name>sys_ui_related_list_entry</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-06-23 10:23:09</sys_created_on>
+            <sys_id>b5e2117637b21300b06c097973990ee2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-06-23 10:23:09</sys_updated_on>
+        </sys_ui_related_list_entry>
+        <sys_ui_related_list action="INSERT_OR_UPDATE">
+            <calculated_name>Business Service - Edge Portal</calculated_name>
+            <filter/>
+            <name>cmdb_ci_service</name>
+            <order_by/>
+            <position/>
+            <related_list/>
+            <sys_class_name>sys_ui_related_list</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-06-23 10:23:09</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>b9e2117637b21300b06c097973990ee0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Business Service - Edge Portal</sys_name>
+            <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+            <sys_update_name>sys_ui_related_cmdb_ci_service_edge_portal</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-06-23 10:23:09</sys_updated_on>
+            <sys_user/>
+            <view display_value="Edge Portal" name="edge_portal">f6525d3637b21300b06c097973990eaa</view>
+            <view_name/>
+        </sys_ui_related_list>
+    </sys_ui_related>
+</record_update>

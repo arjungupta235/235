@@ -2,7 +2,7 @@
 <record_update table="m2m_sp_widget_dependency">
     <m2m_sp_widget_dependency action="INSERT_OR_UPDATE">
         <sp_dependency display_value="HeisenbergRetinaIcons">f7fdd25e87c50300e0ef0cf888cb0b7b</sp_dependency>
-        <sp_widget display_value="Edge SC Catalog Item">031c1621db451300ba2873278c9619e7</sp_widget>
+        <sp_widget display_value="Edge SC Catalog Item Form">031c1621db451300ba2873278c9619e7</sp_widget>
         <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-03-24 18:40:44</sys_created_on>

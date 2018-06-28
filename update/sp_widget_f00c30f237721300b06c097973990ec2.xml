@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<record_update table="sp_rel_widget_clone">
-    <sp_rel_widget_clone action="INSERT_OR_UPDATE">
-        <child display_value="Edge SC Catalog Item Form">031c1621db451300ba2873278c9619e7</child>
-        <cloned>2018-03-24 18:40:44</cloned>
-        <last_validated>2018-03-24 18:40:44</last_validated>
-        <parent display_value="SC Catalog Item">3c29786e87133200e0ef0cf888cb0bdf</parent>
-        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;sp_widget&gt;&lt;category&gt;sc&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function ($scope, $http, spScUtil, spUtil, nowAttachmentHandler, $rootScope, $sanitize, $window, $sce, i18n, $timeout, $log, spAriaUtil, $document, spModal) {
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $http, spScUtil, spUtil, nowAttachmentHandler, $rootScope, $sanitize, $window, $sce, i18n, $timeout, $log, spAriaUtil, $document, spModal) {
 	var c = this;
 	c.quantity = c.data.quantity ? parseInt(c.data.quantity) : 1;
 	c.mandatory = [];
@@ -14,22 +11,22 @@
 	c.widget._debugContextMenu = [
 		[ i18n.getMessage("Open") + " sc_cat_item", function(){
 			var item = c.data.sc_cat_item;
-			$window.open("/sp_config?id=form&amp;table=" + item.table + "&amp;sys_id=" + item.sys_id); }]
+			$window.open("/sp_config?id=form&table=" + item.table + "&sys_id=" + item.sys_id); }]
 	];
 	c.showAddCartBtn = function() {
-		return c.options.show_add_cart_button &amp;&amp;
-			c.data.sc_cat_item.sys_class_name !== "sc_cat_item_producer" &amp;&amp;
-			!c.data.sc_cat_item.no_cart &amp;&amp; !c.data.is_cart_item;
+		return c.options.show_add_cart_button &&
+			c.data.sc_cat_item.sys_class_name !== "sc_cat_item_producer" &&
+			!c.data.sc_cat_item.no_cart && !c.data.is_cart_item;
 	}
 	
 	c.showQuantitySelector = function() {
-		return c.data.sc_cat_item.sys_class_name !== "sc_cat_item_producer" &amp;&amp;
-			!c.data.sc_cat_item.no_quantity &amp;&amp;
+		return c.data.sc_cat_item.sys_class_name !== "sc_cat_item_producer" &&
+			!c.data.sc_cat_item.no_quantity &&
 			(!c.data.sc_cat_item.no_order_now || !c.data.sc_cat_item.no_cart);
 	}
 
 	c.showOrderNowButton = function() {
-		return !$scope.data.is_cart_item &amp;&amp; (c.data.sc_cat_item.use_sc_layout || !c.data.sc_cat_item.no_order_now);
+		return !$scope.data.is_cart_item && (c.data.sc_cat_item.use_sc_layout || !c.data.sc_cat_item.no_order_now);
 	}
 
 	c.allowOrder = function() {
@@ -39,7 +36,7 @@
 		if (c.data.sc_cat_item.no_order)
 			return false;
 
-		if (c.data.sc_cat_item.no_order_now &amp;&amp; c.data.sc_cat_item.no_cart)
+		if (c.data.sc_cat_item.no_order_now && c.data.sc_cat_item.no_cart)
 			return false;
 
 		return true;
@@ -149,7 +146,7 @@
 	}
 
 	function addLink(url, msg) {
-		return " &lt;a href=" + url + "&gt;" + msg + "&lt;/a&gt;";
+		return " <a href=" + url + ">" + msg + "</a>";
 	}
 	
 	$scope.$on("$sp.service_catalog.wishlist.update", function(evt, item) {
@@ -161,12 +158,12 @@
 		$scope.submitting = true;
 		$scope.m.actionMsg = $scope.data.is_wishlist_item ? $scope.m.wishlistUpdateMsg : $scope.m.wishlistAddMsg;
 		$scope.m.actionMsg += addLink('?id=sc_wishlist', $scope.m.viewWishListMsg);
-		$scope.m.actionMsg += '&lt;i class="fa fa-close pull-right pointer" ng-click="c.hideCartMsg()"/&gt;';
+		$scope.m.actionMsg += '<i class="fa fa-close pull-right pointer" ng-click="c.hideCartMsg()"/>';
 		$scope.m.actionMsg = $sce.trustAsHtml($scope.m.actionMsg);
 		$scope.is_update_wishlist = false;
 		spScUtil.addToWishlist($scope.data.sc_cat_item.sys_id, c.quantity, getVarData($scope.data.sc_cat_item._fields), $scope.data._generatedItemGUID).then(function(response){
 			var cartItemId = "";
-			for (var i=0; i&lt;response.data.result.items.length; i++) {
+			for (var i=0; i<response.data.result.items.length; i++) {
 				var item = response.data.result.items[i];
 				if (item.catalog_item_id === $scope.data.sc_cat_item.sys_id) {
 					cartItemId = item.cart_item_id;
@@ -213,7 +210,7 @@
 										sys_class_name: $scope.data.sc_cat_item.sys_class_name}
 		});
 
-		if ($scope.data.sys_properties.twostep &amp;&amp; $scope.data.sc_cat_item.sys_class_name != "sc_cat_item_producer") {
+		if ($scope.data.sys_properties.twostep && $scope.data.sc_cat_item.sys_class_name != "sc_cat_item_producer") {
 			$scope.server.get({
 				cart: 'cart_' + $scope.data.sc_cat_item.sys_id,
 				itemDetails: {sys_id: $scope.data.sc_cat_item.sys_id, quantity: $scope.data.sc_cat_item.quantity, fields: getVarData($scope.data.sc_cat_item._fields), newRecordID: $scope.data._generatedItemGUID},
@@ -272,7 +269,7 @@
 				ah.setParams($scope.data._attachmentTable, $scope.data._generatedItemGUID, 1024 * 1024 * $scope.data.maxAttachmentSize);
 				$scope.attachmentHandler.getAttachmentList();
 				$scope.m.actionMsg = $scope.m.cartAddMsg + addLink('?id=sc_cart', $scope.m.viewCartMsg);
-				$scope.m.actionMsg += '&lt;i class="fa fa-close pull-right pointer" ng-click="c.hideCartMsg()"/&gt;';
+				$scope.m.actionMsg += '<i class="fa fa-close pull-right pointer" ng-click="c.hideCartMsg()"/>';
 				$scope.m.actionMsg = $sce.trustAsHtml($scope.m.actionMsg);
 				$scope.data.showMsg = true;
 				$scope.submitting = false;
@@ -312,7 +309,7 @@
 
 	// spModel populates mandatory - hasMandatory is called by the submit button
 	$scope.hasMandatory = function() {
-		return c.mandatory &amp;&amp; c.mandatory.length &gt; 0;
+		return c.mandatory && c.mandatory.length > 0;
 	};
 
 	// switch catalog items
@@ -347,12 +344,14 @@
 	}
     
     $timeout(function() {
-        if ($document[0].getElementsByClassName('sc-sticky-item-header').length &gt; 0) {
+        if ($document[0].getElementsByClassName('sc-sticky-item-header').length > 0) {
             var titleHeight = $document[0].getElementsByClassName('sc-sticky-item-header')[0].clientHeight;
             $scope.stickyHeaderTop = '-' + (titleHeight - 20 - $document[0].getElementsByClassName('sc-cat-item-short-description')[0].clientHeight) + 'px;';
         }
     });
-}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.panel-button {
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.panel-button {
   float: none;
 }
 
@@ -469,7 +468,16 @@
     width: 65px;
     padding-top: 2px;
   }
-}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;color&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;widget-sc-cat-item-v2&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function(scope, elem){
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>color</field_list>
+        <has_preview>false</has_preview>
+        <id>edge_sc_catalog_item_modal</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope, elem){
     scope.setFocusToAttachment = function () {
 		setTimeout(function () {
 			var inboxArray = elem.find("a.view-attachment");
@@ -477,25 +485,30 @@
 		}, 100);
 	}
 }
-	]]&gt;&lt;/link&gt;&lt;name&gt;SC Catalog Item&lt;/name&gt;&lt;option_schema&gt;[{"name":"show_add_cart_button","label":"Show Add Cart Button","type":"boolean"},{"hint":"If you turn on this, you will be able to see field validation messages on right side","name":"show_field_validation_messages","default_value":"true","label":"Show field validation messages","type":"boolean"},{"hint":"Show Add/Update Wish List buttons","name":"show_add_to_wishlist_button","default_value":"true","label":"Show Add/Update Wish List buttons","type":"boolean"},{"hint":"Order item section on top. If you uncheck this, order section will be displayed at bottom of screen","name":"display_cart_on_right","default_value":"true","label":"Order Item Section On Top","type":"boolean"},{"hint":"Show item description in few words with an option to read more","name":"show_less_description","default_value":"true","label":"Enable Show More/Less for Item description on Mobile","type":"boolean"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles&gt;snc_external,snc_internal&lt;/roles&gt;&lt;script&gt;&lt;![CDATA[// populate the 'data' variable with catalog item, variables, and variable view
+	]]></link>
+        <name>Edge SC Catalog Item Modal</name>
+        <option_schema>[{"name":"show_add_cart_button","section":"other","default_value":"true","label":"Show Add Cart Button","type":"boolean"},{"hint":"If you turn on this, you will be able to see field validation messages on right side","name":"show_field_validation_messages","default_value":"true","section":"other","label":"Show field validation messages","type":"boolean"},{"hint":"Show Add/Update Wish List buttons","name":"show_add_to_wishlist_button","default_value":"true","section":"other","label":"Show Add/Update Wish List buttons","type":"boolean"},{"hint":"Order item section on top. If you uncheck this, order section will be displayed at bottom of screen","name":"display_cart_on_right","default_value":"false","section":"other","label":"Order Item Section On Top","type":"boolean"},{"hint":"Show item description in few words with an option to read more","name":"show_less_description","default_value":"true","section":"other","label":"Enable Show More/Less for Item description on Mobile","type":"boolean"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[// populate the 'data' variable with catalog item, variables, and variable view
 (function() {
-	if (input &amp;&amp; input.action == 'init_item') {
+	if (input && input.action == 'init_item') {
 		data._generatedItemGUID = gs.generateGUID();
 		return;
 	}
-	else if (input &amp;&amp; input.action === "order_item") {
+	else if (input && input.action === "order_item") {
 		data.orderItemModal = $sp.getWidget('widget-modal', {embeddedWidgetId: 'sc-checkout', embeddedWidgetOptions: {cart: {name: input.cart}, action: 'order_now', item: input.itemDetails, requested_for: {id:options.requested_for_id, displayValue:options.requested_for_display}
 																																																								 }, backdrop: 'static', keyboard: false, size: 'md'});
 		return;
-	} else if (input &amp;&amp; input.action == "order_wishlist_item") {
+	} else if (input && input.action == "order_wishlist_item") {
 		data.orderItemModal = $sp.getWidget('widget-modal', {embeddedWidgetId: 'sc-checkout', embeddedWidgetOptions: {cart: {name: input.cart}, action: 'order_now_wishlisted_item', item: input.itemDetails, requested_for: {id:options.requested_for_id, displayValue:options.requested_for_display}
 																																																								 }, backdrop: 'static', keyboard: false, size: 'md'});
 		return;
-	} else if (input &amp;&amp; input.action === 'log_request') {
-		 $sp.logStat('Cat Item Request', input.itemDetails.sys_class_name, input.itemDetails.sys_id, input.itemDetails.name);
-		 return;
+	} else if (input && input.action === 'log_request') {
+		$sp.logStat('Cat Item Request', input.itemDetails.sys_class_name, input.itemDetails.sys_id, input.itemDetails.name);
+		return;
 	}
-	
+
 	// portal can specify a catalog and catalog category home page
 	data.sc_catalog_page = $sp.getDisplayValue("sc_catalog_page") || "sc_home";
 	data.sc_category_page = $sp.getDisplayValue("sc_category_page") || "sc_category";
@@ -518,7 +531,7 @@
 		options.table = (tableGR.get(options.table)) ? tableGR.getValue("name") : null;
 	}
 
-	options.url = options.url || "?id={page}&amp;is_new_order=true&amp;table={table}&amp;sys_id={sys_id}";
+	options.url = options.url || "?id={page}&is_new_order=true&table={table}&sys_id={sys_id}";
 	data.showPrices = $sp.showCatalogPrices();
 	var m = data.msgs = {};
 	m.submitMsg = gs.getMessage("Submit");
@@ -531,7 +544,7 @@
 	m.dialogMessage = gs.getMessage("Are you sure?");
 	m.dialogOK = gs.getMessage("OK");
 	m.dialogCancel = gs.getMessage("Cancel");
-	
+
 	m.renameSuccessMsg = gs.getMessage("Attachment renamed successfully");
 	m.deleteSuccessMsg = gs.getMessage("Attachment deleted successfully");
 	m.wishlistMsg = gs.getMessage('Wish List');
@@ -548,12 +561,12 @@
 	if (isNaN(data.maxAttachmentSize))
 		data.maxAttachmentSize = 24;
 	m.largeAttachmentMsg = gs.getMessage("Attached files must be smaller than {0} - please try again", "" + data.maxAttachmentSize + "MB");
-	
+
 	var cartName = data.is_cart_item ? 'DEFAULT' : 'saved_items';
 	var cart = new sn_sc.CartJS(cartName);
 
 	data.showWishlist = new sn_sc.Catalog('' + $sp.getValue('sc_catalog')).isWishlistEnabled();
-	
+
 	if (edit_parm) {
 		var cart_item_id = $sp.getParameter("sys_id");
 		var gr = new GlideRecord("sc_cart_item");
@@ -574,7 +587,7 @@
 		for(var f in data.sc_cat_item._fields) {
 			// Put the values into the cat item fields
 			var field = data.sc_cat_item._fields[f];
-			if (typeof values[f] != "undefined" &amp;&amp; typeof values[f].value != "undefined") {
+			if (typeof values[f] != "undefined" && typeof values[f].value != "undefined") {
 				if (values[f].type == 9 || values[f].type == 10)
 					field.value = values[f].displayValue;
 				else
@@ -583,31 +596,31 @@
 				field.display_value_list = values[f].display_value_list;
 			}
 			updatePriceOnField(field);
-				
+
 		}
 		data._generatedItemGUID = cart_item_id;
 		data.quantity = '' + gr.quantity;
 	} else {
-	
+
 		if (input)
 			data.sys_id = input.sys_id;
 		else if (options.sys_id)
 			data.sys_id = options.sys_id;
 		else
 			data.sys_id = $sp.getParameter("sys_id") || $sp.getParameter('sl_sys_id');
-	
+
 		if (!data.sys_id) {
 			data.recordFound = false;
 			return;
 		}
-	
+
 		data._generatedItemGUID = gs.generateGUID();
 		var validatedItem = new sn_sc.CatItem('' + data.sys_id);
 		if (!validatedItem.canView() || !validatedItem.isVisibleServicePortal()) {
 			data.recordFound = false;
 			return;
 		}
-	
+
 		data.sc_cat_item = $sp.getCatalogItem(data.sys_id, true);
 		if (data.sc_cat_item.category) {
 			var categoryJS;
@@ -621,19 +634,19 @@
 			}
 			data.category = {
 				name: categoryJS.getTitle(),
-				url: categoryJS.canView() ? '?id=' + data.sc_category_page + '&amp;sys_id=' + categoryID : "#"
+				url: categoryJS.canView() ? '?id=' + data.sc_category_page + '&sys_id=' + categoryID : "#"
 			}
 			data.categories = [];
 			data.categories.push({
 				label: categoryJS.getTitle(),
-				url: categoryJS.canView() ? '?id=' + data.sc_category_page + '&amp;sys_id=' + categoryID : "#"
+				url: categoryJS.canView() ? '?id=' + data.sc_category_page + '&sys_id=' + categoryID : "#"
 			});
-			while(categoryJS &amp;&amp; categoryJS.getParent()) {
+			while(categoryJS && categoryJS.getParent()) {
 				var parentId =  categoryJS.getParent();
 				categoryJS = new sn_sc.CatCategory(parentId);
 				var category = {
 					label: categoryJS.getTitle(),
-					url: categoryJS.canView() ? '?id=' + data.sc_category_page + '&amp;sys_id=' + parentId : "#"
+					url: categoryJS.canView() ? '?id=' + data.sc_category_page + '&sys_id=' + parentId : "#"
 				};
 				data.categories.unshift(category);
 			}
@@ -654,23 +667,23 @@
 	var className = data.sc_cat_item.sys_class_name;
 	if (!new global.CatalogItemTypeProcessor().canCreateNormalCartItem(className)) {
 		if (className == 'sc_cat_item_producer') {
-				var gr = new GlideRecord('sc_cat_item_producer');
-				gr.get(data.sc_cat_item.sys_id);
-				if (gr.isValidRecord())
-					athTblName = gr.getValue('table_name');
+			var gr = new GlideRecord('sc_cat_item_producer');
+			gr.get(data.sc_cat_item.sys_id);
+			if (gr.isValidRecord())
+				athTblName = gr.getValue('table_name');
 		}
 	}
 	data._attachmentTable = athTblName;
 
 	$sp.logStat('Cat Item View', data.sc_cat_item.sys_class_name, data.sc_cat_item.sys_id, data.sc_cat_item.name);
-	
+
 	function getValues(sys_id) {
 		var qs = new sn_sc.VariablePoolQuestionSetJS();
 		qs.setCartID(sys_id);
 		qs.load();
 		var values = {};
 		var questions = qs.getFlatQuestions();
-		for (var i = 0; i &lt; questions.length; i++)
+		for (var i = 0; i < questions.length; i++)
 			values["IO:" + questions[i].sys_id] = questions[i];
 		return values;
 	}
@@ -684,10 +697,10 @@
 
 	function updatePriceForReferenceTable(field) {
 		var tableName = field.refTable + '';
-		if (tableName != undefined &amp;&amp; tableName != null &amp;&amp; tableName != '') {
+		if (tableName != undefined && tableName != null && tableName != '') {
 			var gr = new GlideRecord(tableName);
 			if (gr.isValid()) {
-				if (gr.get(field.value) &amp;&amp; gr.isValidRecord()) {
+				if (gr.get(field.value) && gr.isValidRecord()) {
 					updatePrice(gr, field);
 					updateRecurringPrice(gr, field);
 				}
@@ -697,7 +710,7 @@
 
 	function updatePriceForListCollector(field) {
 		var tableName = field.refTable + '';
-		if (tableName != undefined &amp;&amp; tableName != null &amp;&amp; tableName != '') {
+		if (tableName != undefined && tableName != null && tableName != '') {
 			var gr = new GlideRecord(tableName);
 			if (gr.isValid()) {
 				var values = field.value.split(',');
@@ -707,18 +720,18 @@
 				var rp = 0.0;
 				var price_value_list = [];
 				while(gr.next()) {
-						var price_field = {};
-						updatePrice(gr, price_field);
-						updateRecurringPrice(gr, price_field);
-						if (price_field.price)
-							p += Number(price_field.price);
-						else
-							price_field.price = 0.0;
-						if (price_field.recurring_price)
-							rp += Number(price_field.recurring_price);
-						else
-							price_field.recurring_price = 0.0;
-						price_value_list.push(price_field);
+					var price_field = {};
+					updatePrice(gr, price_field);
+					updateRecurringPrice(gr, price_field);
+					if (price_field.price)
+						p += Number(price_field.price);
+					else
+						price_field.price = 0.0;
+					if (price_field.recurring_price)
+						rp += Number(price_field.recurring_price);
+					else
+						price_field.recurring_price = 0.0;
+					price_value_list.push(price_field);
 				}
 				field.price = p;
 				field.recurring_price = rp;
@@ -750,207 +763,214 @@
 		} else if (field.choices) {
 			field.choices.forEach( function(choice) {
 				if (choice.value +'' == field.value + '')
-					 setPrice(field, choice.price, choice.recurring_price);
+					setPrice(field, choice.price, choice.recurring_price);
 			});
-		} else if (field._pricing &amp;&amp; field._pricing.pricing_implications === true) {
+		} else if (field._pricing && field._pricing.pricing_implications === true) {
 			if (field.type == 'reference') 
 				updatePriceForReferenceTable(field);
 			else if (field.type == 'glide_list')
 				updatePriceForListCollector(field);
 		}
 	}
-})()]]&gt;&lt;/script&gt;&lt;servicenow&gt;true&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2017-06-14 18:00:07&lt;/sys_created_on&gt;&lt;sys_id&gt;3c29786e87133200e0ef0cf888cb0bdf&lt;/sys_id&gt;&lt;sys_mod_count&gt;161&lt;/sys_mod_count&gt;&lt;sys_name&gt;SC Catalog Item&lt;/sys_name&gt;&lt;sys_package display_value="Service Portal - Service Catalog" source="com.glide.service-portal.service-catalog"&gt;74a0c226b9a013006517ce7df7ee4602&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_3c29786e87133200e0ef0cf888cb0bdf&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2017-09-22 14:55:56&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div id="sc_cat_item" ng-if="::data.recordFound"&gt;
-  &lt;sp-widget widget="c.orderItemModal" ng-if="c.orderItemModal"&gt;&lt;/sp-widget&gt;
-  &lt;div class="row" ng-if="::data.sc_cat_item" &gt;
-    &lt;div class="col-sm-12" ng-class="{true: 'col-md-9', false: 'col-md-12'}[options.display_cart_on_right === 'true']" id="catItemTop"&gt;
-      &lt;!-- Info Message Box --&gt;
-      &lt;div ng-if="data.show_wishlist_msg" class="alert alert-info"&gt;
-        	{{::m.itemWishlistMsg}}
-      &lt;/div&gt;
-      &lt;!--	Success Message Box	--&gt;
-      &lt;div class="alert alert-success" ng-if="data.showMsg" sc-bind-html-compile="m.actionMsg"&gt;
-      &lt;/div&gt;
-     &lt;div class="panel panel-default"&gt;
-        &lt;!-- Title Section --&gt;
-        &lt;div class="wrapper-md b-b break-word item-header" ng-class="{true: '', false: 'sc-sticky-item-header'}[!c.data.sc_cat_item.short_description]" style="top: {{stickyHeaderTop}}"&gt;
-        	&lt;h1 class="h2 m-t-none m-b-sm font-thin" ng-if="::data.sc_cat_item.name"&gt;{{::data.sc_cat_item.name}}&lt;/h1&gt;
-        	&lt;div class="text-muted sc-cat-item-short-description" ng-if="::data.sc_cat_item.short_description"&gt;{{::data.sc_cat_item.short_description}}&lt;/div&gt;
-      	&lt;/div&gt;
-        &lt;div class="wrapper-md row b-b no-margin" ng-if="c.data.sc_cat_item.picture || c.data.sc_cat_item.description"&gt;
-          &lt;div class="col-sm-4 col-xs-12 no-padder" ng-if="c.data.sc_cat_item.picture"&gt;
-            &lt;div class="wrapper-md text-center"&gt;
-              &lt;i class="fa fa-chevron-left pointer" style="position:absolute; top:50%; left:4%; color:#CECECE" ng-if="options.image_gallery"&gt;&lt;/i&gt;
-              &lt;img class="img-responsive catalog-item-image" alt="{{::data.sc_cat_item.name}}" style="display: inline" ng-src="{{::data.sc_cat_item.picture}}?t=medium" /&gt;
-              &lt;i class="fa fa-chevron-right pointer" style="position:absolute; top:50%; right:4%; color:#CECECE" ng-if="options.image_gallery"&gt;&lt;/i&gt;
-              &lt;div class="image-gallery padding-top" ng-if="options.image_gallery"&gt;
-                &lt;i class="fa fa-circle active"&gt;&lt;/i&gt;
-                &lt;i class="fa fa-circle"&gt;&lt;/i&gt;
-                &lt;i class="fa fa-circle"&gt;&lt;/i&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div class="col-xs-12 padder-md break-word"
-               ng-class="{true: 'col-sm-12 no-padder', false: 'col-sm-8'}[!c.data.sc_cat_item.picture]"&gt;
-            &lt;div class="visible-md visible-lg" ng-class="{false : 'visible-xs visible-sm', true : 'hidden-xs hidden-sm'}[c.options.show_less_description === 'true']"&gt;
-              &lt;div ng-bind-html="::data.sc_cat_item.description"&gt;&lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="col-xs-12 col-sm-12 visible-xs visible-sm" ng-if="c.options.show_less_description === 'true'"&gt;
-              &lt;sc-toggle-data sn-data="::data.sc_cat_item.description"&gt;&lt;/sc-toggle-data&gt;
-        		&lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class="" ng-class="{'b-b wrapper-md': !data.no_fields}"&gt;
-          &lt;sp-cat-item item="::data.sc_cat_item" &gt;&lt;/sp-cat-item&gt;
-          &lt;form&gt;
-            &lt;!-- display view and model --&gt;
-            &lt;sp-model form-model="::data.sc_cat_item" mandatory="c.mandatory"&gt;&lt;/sp-model&gt;
-          &lt;/form&gt;
-        &lt;/div&gt;
-        &lt;!-- Bottom cart --&gt;
-        &lt;div class="inline-cart" ng-if="::options.display_cart_on_right !== 'true'"&gt;
-          &lt;div ng-if="data.sc_cat_item.sys_class_name != 'sc_cat_item_content'" class="wrapper-md b-b"&gt;
-              &lt;div class="m-b text-right" ng-if="data.showPrices &amp;&amp; (data.sc_cat_item.price || data.sc_cat_item.recurring_price)" &gt;
-               &lt;b&gt;${Price}:&lt;/b&gt; {{data.sc_cat_item.price}}&lt;em ng-if="data.sc_cat_item.recurring_price" class="cat_item_price"&gt; + {{data.sc_cat_item.recurring_price}}&lt;/em&gt;
-              &lt;/div&gt;
-              &lt;div ng-if="::c.allowOrder()" class="text-right"&gt;
-                &lt;select ng-if="c.showQuantitySelector()"
+})()]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-06-23 08:43:09</sys_created_on>
+        <sys_id>f00c30f237721300b06c097973990ec2</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Edge SC Catalog Item Modal</sys_name>
+        <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
+        <sys_update_name>sp_widget_f00c30f237721300b06c097973990ec2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-06-23 10:02:46</sys_updated_on>
+        <template><![CDATA[<div id="sc_cat_item" ng-if="c.data.recordFound">
+  <sp-widget widget="c.orderItemModal" ng-if="c.orderItemModal"></sp-widget>
+  <div class="row" ng-if="c.data.sc_cat_item" >
+    <div class="col-sm-12" ng-class="{true: 'col-md-9', false: 'col-md-12'}[options.display_cart_on_right === 'true']" id="catItemTop">
+      <!-- Info Message Box -->
+      <div ng-if="c.data.show_wishlist_msg" class="alert alert-info">
+        	{{c.m.itemWishlistMsg}}
+      </div>
+      <!--	Success Message Box	-->
+      <div class="alert alert-success" ng-if="c.data.showMsg" sc-bind-html-compile="m.actionMsg">
+      </div>
+     <div class="panel panel-default">
+        <!-- Title Section -->
+        <div class="wrapper-md b-b break-word item-header" ng-class="{true: '', false: 'sc-sticky-item-header'}[!c.data.sc_cat_item.short_description]" style="top: {{stickyHeaderTop}}">
+        	<h1 class="h2 m-t-none m-b-sm font-thin" ng-if="c.data.sc_cat_item.name">{{c.data.sc_cat_item.name}}</h1>
+        	<div class="text-muted sc-cat-item-short-description" ng-if="c.data.sc_cat_item.short_description">{{c.data.sc_cat_item.short_description}}</div>
+      	</div>
+        <div class="wrapper-md row b-b no-margin" ng-if="c.data.sc_cat_item.picture || c.data.sc_cat_item.description">
+          <div class="col-sm-4 col-xs-12 no-padder" ng-if="c.data.sc_cat_item.picture">
+            <div class="wrapper-md text-center">
+              <i class="fa fa-chevron-left pointer" style="position:absolute; top:50%; left:4%; color:#CECECE" ng-if="options.image_gallery"></i>
+              <img class="img-responsive catalog-item-image" alt="{{c.data.sc_cat_item.name}}" style="display: inline" ng-src="{{c.data.sc_cat_item.picture}}?t=medium" />
+              <i class="fa fa-chevron-right pointer" style="position:absolute; top:50%; right:4%; color:#CECECE" ng-if="options.image_gallery"></i>
+              <div class="image-gallery padding-top" ng-if="options.image_gallery">
+                <i class="fa fa-circle active"></i>
+                <i class="fa fa-circle"></i>
+                <i class="fa fa-circle"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 padder-md break-word"
+               ng-class="{true: 'col-sm-12 no-padder', false: 'col-sm-8'}[!c.data.sc_cat_item.picture]">
+            <div class="visible-md visible-lg" ng-class="{false : 'visible-xs visible-sm', true : 'hidden-xs hidden-sm'}[c.options.show_less_description === 'true']">
+              <div ng-bind-html="c.data.sc_cat_item.description"></div>
+            </div>
+            <div class="col-xs-12 col-sm-12 visible-xs visible-sm" ng-if="c.options.show_less_description === 'true'">
+              <sc-toggle-c.data sn-c.data="c.data.sc_cat_item.description"></sc-toggle-c.data>
+        		</div>
+          </div>
+        </div>
+        <div class="" ng-class="{'b-b wrapper-md': !c.data.no_fields}">
+          <sp-cat-item item="c.data.sc_cat_item" ></sp-cat-item>
+          <form>
+            <!-- display view and model -->
+            <sp-model form-model="c.data.sc_cat_item" mandatory="c.mandatory"></sp-model>
+          </form>
+        </div>
+        <!-- Bottom cart -->
+        <div class="inline-cart" ng-if="c.options.display_cart_on_right !== 'true'">
+          <div ng-if="c.data.sc_cat_item.sys_class_name != 'sc_cat_item_content'" class="wrapper-md b-b">
+              <div class="m-b text-right" ng-if="c.data.showPrices && (c.data.sc_cat_item.price || c.data.sc_cat_item.recurring_price)" >
+               <b>${Price}:</b> {{c.data.sc_cat_item.price}}<em ng-if="c.data.sc_cat_item.recurring_price" class="cat_item_price"> + {{c.data.sc_cat_item.recurring_price}}</em>
+              </div>
+              <div ng-if="c.allowOrder()" class="text-right">
+                <select ng-if="c.showQuantitySelector()"
                         ng-disabled="submitting"
                         class="form-control quantity-selector m-r-xs"
                         ng-model="c.quantity"
                         aria-label="${Quantity}"
-                        ng-options="num for num in [1,2,3,4,5,6,7,8,9,10]"&gt;
-                &lt;/select&gt;
-                &lt;button tabindex="0" ng-if="c.showAddCartBtn()" name="add_to_cart" ng-disabled="submitting" ng-click="triggerAddToCart()" class="btn btn-default m-r-xs"&gt;
-                  &lt;i class="fa fa fa-shopping-cart m-r-xs"&gt;&lt;/i&gt;
+                        ng-options="num for num in [1,2,3,4,5,6,7,8,9,10]">
+                </select>
+                <button tabindex="0" ng-if="c.showAddCartBtn()" name="add_to_cart" ng-disabled="submitting" ng-click="triggerAddToCart()" class="btn btn-default m-r-xs">
+                  <i class="fa fa fa-shopping-cart m-r-xs"></i>
                   ${Add to Cart}
-                &lt;/button&gt;
-                &lt;button tabindex="0" ng-if="data.is_cart_item" name="update" ng-disabled="submitting" ng-click="triggerUpdateCart()" class="btn btn-default"&gt;
-                  &lt;i class="fa fa fa-shopping-cart m-r-xs"&gt;&lt;/i&gt;
+                </button>
+                <button tabindex="0" ng-if="c.data.is_cart_item" name="update" ng-disabled="submitting" ng-click="triggerUpdateCart()" class="btn btn-default">
+                  <i class="fa fa fa-shopping-cart m-r-xs"></i>
                   ${Update Cart}
-                &lt;/button&gt;
-                &lt;span class="form-group relative" ng-if="data.showWishlist &amp;&amp; !data.is_cart_item &amp;&amp; c.options.show_add_to_wishlist_button === 'true'"&gt;
-                  &lt;button ng-if="!data.is_wishlist_item" name="add_to_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default m-r-xs"&gt;
-                    &lt;i class="icon icon-sp-wishlist m-r-xs" style="vertical-align: text-bottom;"&gt;&lt;/i&gt;
+                </button>
+                <span class="form-group relative" ng-if="c.data.showWishlist && !c.data.is_cart_item && c.options.show_add_to_wishlist_button === 'true'">
+                  <button ng-if="!c.data.is_wishlist_item" name="add_to_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default m-r-xs">
+                    <i class="icon icon-sp-wishlist m-r-xs" style="vertical-align: text-bottom;"></i>
                     ${Add to Wish List}
-                  &lt;/button&gt;
-                  &lt;button ng-if="data.is_wishlist_item" name="update_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default m-r-xs"&gt;
-                    &lt;i class="icon icon-sp-wishlist m-r-xs" style="vertical-align: text-bottom;"&gt;&lt;/i&gt;
+                  </button>
+                  <button ng-if="c.data.is_wishlist_item" name="update_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default m-r-xs">
+                    <i class="icon icon-sp-wishlist m-r-xs" style="vertical-align: text-bottom;"></i>
                     ${Update Wish List}
-                  &lt;/button&gt;
-                &lt;/span&gt;
-								&lt;button ng-if="::c.showOrderNowButton()" tabindex="0" name="submit" ng-disabled="submitting" ng-click="triggerOnSubmit()" class="btn btn-primary"&gt;{{::submitButtonMsg}}&lt;/button&gt;
-                &lt;span ng-if="submitting" style="padding-left:4px"&gt;${Submitting...}&lt;/span&gt;
-              &lt;/div&gt;
-              &lt;div ng-show="hasMandatory(c.mandatory)" class="alert alert-info" style="margin-top: .5em" ng-if="c.options.show_field_validation_messages === 'true'"&gt;
-                &lt;span ng-if="hasMandatory(mandatory)"&gt;${Required information} &lt;/span&gt;
-                &lt;label ng-repeat="f in c.mandatory" for="sp_formfield_{{::f.catalogFieldName}}" class="label label-danger sc-field-error-label" style="margin-right: .5em; display: inline-block;"&gt;{{::f.label}}&lt;/label&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class="wrapper-md row no-margin"&gt;
-          &lt;now-attachments-list template="sp_attachment_single_line" &gt;&lt;/now-attachments-list&gt;
-          &lt;label ng-if="!submitting" style="float:right;font-weight:normal;cursor:pointer;"&gt;
-            &lt;sp-attachment-button&gt;&lt;/sp-attachment-button&gt;
-            &lt;span style="padding-left:4px;"&gt;${Add attachments}&lt;/span&gt;
-          &lt;/label&gt;
-          
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ng-if="::data.sc_cat_item.content_type == 'external'" class="wrapper-md"&gt;
-        &lt;a ng-href="{{::data.sc_cat_item.url}}" target={{::data.sc_cat_item.target}}&gt;{{::data.sc_cat_item.url}} ➚&lt;/a&gt;
-      &lt;/div&gt;
-			&lt;div ng-if="::data.sc_cat_item.content_type == 'kb'" class="wrapper-md"&gt;
-        &lt;a  ng-href="?id=kb_article&amp;sys_id={{::data.sc_cat_item.kb_article}}"&gt;${Go to KB Article:} {{::data.sc_cat_item.kb_article_description}}&lt;/a&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;!-- Right side content --&gt;
-    &lt;div class="col-sm-12 col-md-3 right-side-cart" ng-show="::options.display_cart_on_right === 'true'"&gt;
-      &lt;!-- Right side cart( If you are chaning anything here, please change in bottom cart section also) --&gt;
-      &lt;div ng-class="{true:'sc-fixed', false:'' }[options.display_cart_on_right === 'true']"&gt;
-      	&lt;div ng-if="data.sc_cat_item.sys_class_name != 'sc_cat_item_content'" class="panel panel-{{::options.color}} b wrapper-md"&gt;
-           &lt;div class="form-group" ng-if="::c.allowOrder()"&gt;
-             &lt;select ng-if="c.showQuantitySelector()"
+                  </button>
+                </span>
+								<button ng-if="c.showOrderNowButton()" tabindex="0" name="submit" ng-disabled="submitting" ng-click="triggerOnSubmit()" class="btn btn-primary">${Order Now}</button>
+                <span ng-if="submitting" style="padding-left:4px">${Submitting...}</span>
+              </div>
+              <div ng-show="hasMandatory(c.mandatory)" class="alert alert-info" style="margin-top: .5em" ng-if="c.options.show_field_validation_messages === 'true'">
+                <span ng-if="hasMandatory(mandatory)">${Required information} </span>
+                <label ng-repeat="f in c.mandatory" for="sp_formfield_{{f.catalogFieldName}}" class="label label-danger sc-field-error-label" style="margin-right: .5em; display: inline-block;">{{f.label}}</label>
+              </div>
+            </div>
+        </div>
+        <div class="wrapper-md row no-margin">
+          <now-attachments-list template="sp_attachment_single_line" ></now-attachments-list>
+          <label ng-if="!submitting" style="float:right;font-weight:normal;cursor:pointer;">
+            <sp-attachment-button></sp-attachment-button>
+            <span style="padding-left:4px;">${Add attachments}</span>
+          </label>
+
+        </div>
+      </div>
+      <div ng-if="c.data.sc_cat_item.content_type == 'external'" class="wrapper-md">
+        <a ng-href="{{c.data.sc_cat_item.url}}" target={{c.data.sc_cat_item.target}}>{{c.data.sc_cat_item.url}} ➚</a>
+      </div>
+			<div ng-if="c.data.sc_cat_item.content_type == 'kb'" class="wrapper-md">
+        <a  ng-href="?id=kb_article&sys_id={{c.data.sc_cat_item.kb_article}}">${Go to KB Article:} {{c.data.sc_cat_item.kb_article_description}}</a>
+      </div>
+    </div>
+    <!-- Right side content -->
+    <div class="col-sm-12 col-md-3 right-side-cart" ng-show="c.options.display_cart_on_right === 'true'">
+      <!-- Right side cart( If you are chaning anything here, please change in bottom cart section also) -->
+      <div ng-class="{true:'sc-fixed', false:'' }[options.display_cart_on_right === 'true']">
+      	<div ng-if="c.data.sc_cat_item.sys_class_name != 'sc_cat_item_content'" class="panel panel-{{c.options.color}} b wrapper-md">
+           <div class="form-group" ng-if="c.allowOrder()">
+             <select ng-if="c.showQuantitySelector()"
                      style="text-indent: 6px;"
                      ng-disabled="submitting"
                      class="form-control"
                      ng-model="c.quantity"
                      aria-label="${Quantity}"
-                     ng-options="num for num in [1,2,3,4,5,6,7,8,9,10]"&gt;
-             &lt;/select&gt;
-           &lt;/div&gt;
-           &lt;div class="form-group relative"&gt;
-             &lt;button tabindex="0" ng-if="c.showAddCartBtn()" name="add_to_cart" ng-disabled="submitting" ng-click="triggerAddToCart()" class="btn btn-default sc-btn form-control"&gt;
-               &lt;i class="fa fa fa-shopping-cart sc-order-widget-btn pull-left"&gt;&lt;/i&gt;
+                     ng-options="num for num in [1,2,3,4,5,6,7,8,9,10]">
+             </select>
+           </div>
+           <div class="form-group relative">
+             <button tabindex="0" ng-if="c.showAddCartBtn()" name="add_to_cart" ng-disabled="submitting" ng-click="triggerAddToCart()" class="btn btn-default sc-btn form-control">
+               <i class="fa fa fa-shopping-cart sc-order-widget-btn pull-left"></i>
                ${Add to Cart}
-             &lt;/button&gt;
-             &lt;button tabindex="0" ng-if="data.is_cart_item" name="update" ng-disabled="submitting" ng-click="triggerUpdateCart()" class="btn btn-default sc-btn form-control"&gt;
-               &lt;i class="fa fa fa-shopping-cart sc-order-widget-btn pull-left"&gt;&lt;/i&gt;
+             </button>
+             <button tabindex="0" ng-if="c.data.is_cart_item" name="update" ng-disabled="submitting" ng-click="triggerUpdateCart()" class="btn btn-default sc-btn form-control">
+               <i class="fa fa fa-shopping-cart sc-order-widget-btn pull-left"></i>
                ${Update Cart}
-             &lt;/button&gt;
-           &lt;/div&gt;
-           &lt;div class="form-group relative" ng-if="data.showWishlist &amp;&amp; !data.is_cart_item &amp;&amp; c.options.show_add_to_wishlist_button === 'true'"&gt;
-             &lt;button ng-if="!data.is_wishlist_item" name="add_to_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default sc-btn form-control"&gt;
-               &lt;i class="icon icon-sp-wishlist sc-order-widget-btn pull-left" style="top:5px"&gt;&lt;/i&gt;
+             </button>
+           </div>
+           <div class="form-group relative" ng-if="c.data.showWishlist && !c.data.is_cart_item && c.options.show_add_to_wishlist_button === 'true'">
+             <button ng-if="!c.data.is_wishlist_item" name="add_to_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default sc-btn form-control">
+               <i class="icon icon-sp-wishlist sc-order-widget-btn pull-left" style="top:5px"></i>
                ${Add to Wish List}
-             &lt;/button&gt;
-             &lt;button ng-if="data.is_wishlist_item" name="update_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default sc-btn form-control"&gt;
-             	&lt;i class="icon icon-sp-wishlist sc-order-widget-btn pull-left" style="top:5px"&gt;&lt;/i&gt;
+             </button>
+             <button ng-if="c.data.is_wishlist_item" name="update_wishlist" ng-click="addToWishlist()" ng-disabled="submitting" class="btn btn-default sc-btn form-control">
+             	<i class="icon icon-sp-wishlist sc-order-widget-btn pull-left" style="top:5px"></i>
              	${Update Wish List}
-             &lt;/button&gt;
-           &lt;/div&gt;
-           &lt;div class="form-group" ng-if="data.showPrices &amp;&amp; data.sc_cat_item.price"&gt;
-             &lt;b&gt;${Price}:&lt;/b&gt; {{data.sc_cat_item.price}}&lt;em ng-if="data.sc_cat_item.recurring_price" class="cat_item_price"&gt; + {{data.sc_cat_item.recurring_price}}&lt;/em&gt;
-           &lt;/div&gt;
-           &lt;div class="form-group"&gt;
-             &lt;button ng-if="::c.showOrderNowButton()" tabindex="0" name="submit" ng-disabled="submitting" ng-click="triggerOnSubmit()" class="btn btn-primary btn-block"&gt;{{::submitButtonMsg}}&lt;/button&gt;
-             &lt;span ng-if="submitting" style="padding-left:4px"&gt;${Submitting...}&lt;/span&gt;
-           &lt;/div&gt;
-         &lt;/div&gt;
-      	&lt;div class="sc-item-error-messages" ng-if="c.options.show_field_validation_messages === 'true'"&gt;
-            &lt;div class="row" ng-if="hasMandatory(c.mandatory)" class=" row alert alert-info" style="margin-top: .5em"&gt;
-              &lt;div class="col-sm-12"&gt;
-                &lt;div ng-if="hasMandatory(c.mandatory)"&gt;${Required information} &lt;/div&gt;
-                &lt;label ng-repeat="f in c.mandatory" for="sp_formfield_{{::f.catalogFieldName}}" class="label label-danger sc-field-error-label"&gt;{{::f.label}}&lt;/label&gt;
-              &lt;/div&gt;
-           &lt;/div&gt;
-         &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;sp-message-dialog name="delete_attachment"
-                       title="{{::m.dialogTitle}}"
-                       message="{{::m.dialogMessage}}"
-                       ok="{{::m.dialogOK}}"
-                       cancel="{{::m.dialogCancel}}"
-                       dialog-class="delete-dialog"&gt;&lt;/sp-message-dialog&gt;
-  &lt;div ng-if="::!data.sc_cat_item" &gt;
-    &lt;div class="panel panel-default"&gt;
-      &lt;div class="panel-heading"&gt;&lt;h4 class="panel-title"&gt;${Item not found}&lt;/h4&gt;&lt;/div&gt;
-      &lt;div class="panel-body wrapper"&gt;
-        &lt;p&gt;${This item is not found or currently not available}&lt;/p&gt;
-        &lt;p&gt;${Suggestions}:&lt;/p&gt;
-        &lt;ul&gt;
-          &lt;li&gt;${Try searching for the item}&lt;/li&gt;
-          &lt;li&gt;${Go to the Service Catalog homepage}&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class="sr-only" aria-live="assertive"&gt;{{::c.status}}&lt;/div&gt;
-&lt;/div&gt;
-&lt;div ng-if="::!data.recordFound" class="alert alert-info"&gt;{{::m.invalidRecordMsg}}&lt;/div&gt;
-&lt;now-message key="Added item to shopping cart" value="${Added item to shopping cart}"/&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload>
-        <sys_class_name>sp_rel_widget_clone</sys_class_name>
-        <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2018-03-24 18:40:44</sys_created_on>
-        <sys_id>df1c1621db451300ba2873278c9619f2</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>031c1621db451300ba2873278c9619e7</sys_name>
-        <sys_package display_value="ESM Edge Portal" source="x_165710_esm_edge">a1245a69db051300ba2873278c9619f8</sys_package>
-        <sys_policy/>
-        <sys_scope display_value="ESM Edge Portal">a1245a69db051300ba2873278c9619f8</sys_scope>
-        <sys_update_name>sp_rel_widget_clone_df1c1621db451300ba2873278c9619f2</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-03-24 18:40:44</sys_updated_on>
-    </sp_rel_widget_clone>
+             </button>
+           </div>
+           <div class="form-group" ng-if="c.data.showPrices && c.data.sc_cat_item.price">
+             <b>${Price}:</b> {{c.data.sc_cat_item.price}}<em ng-if="c.data.sc_cat_item.recurring_price" class="cat_item_price"> + {{c.data.sc_cat_item.recurring_price}}</em>
+           </div>
+           <div class="form-group">
+             <button ng-if="c.showOrderNowButton()" tabindex="0" name="submit" ng-disabled="submitting" ng-click="triggerOnSubmit()" class="btn btn-primary btn-block">${Order Now}</button>
+             <span ng-if="submitting" style="padding-left:4px">${Submitting...}</span>
+           </div>
+          <div class="form-group">
+             <button ng-if="c.showFavouritesButton()" tabindex="0" name="favourite" ng-disabled="adding" ng-click="triggerOnFavourite()" class="btn btn-primary btn-block">{{::FavouriteButtonMsg}}</button>
+             <span ng-if="submitting" style="padding-left:4px">${Submitting...}</span>
+           </div>
+         </div>
+      	<div class="sc-item-error-messages" ng-if="c.options.show_field_validation_messages === 'true'">
+            <div class="row" ng-if="hasMandatory(c.mandatory)" class=" row alert alert-info" style="margin-top: .5em">
+              <div class="col-sm-12">
+                <div ng-if="hasMandatory(c.mandatory)">${Required information} </div>
+                <label ng-repeat="f in c.mandatory" for="sp_formfield_{{f.catalogFieldName}}" class="label label-danger sc-field-error-label">{{f.label}}</label>
+              </div>
+           </div>
+         </div>
+      </div>
+    </div>
+  </div>
+  <sp-message-dialog name="delete_attachment"
+                       title="{{c.m.dialogTitle}}"
+                       message="{{c.m.dialogMessage}}"
+                       ok="{{c.m.dialogOK}}"
+                       cancel="{{c.m.dialogCancel}}"
+                       dialog-class="delete-dialog"></sp-message-dialog>
+  <div ng-if="!c.data.sc_cat_item" >
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4 class="panel-title">${Item not found}</h4></div>
+      <div class="panel-body wrapper">
+        <p>${This item is not found or currently not available}</p>
+        <p>${Suggestions}:</p>
+        <ul>
+          <li>${Try searching for the item}</li>
+          <li>${Go to the Service Catalog homepage}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="sr-only" aria-live="assertive">{{c.status}}</div>
+</div>
+<div ng-if="!c.data.recordFound" class="alert alert-info">{{c.m.invalidRecordMsg}}</div>
+<now-message key="Added item to shopping cart" value="${Added item to shopping cart}"/>
+]]></template>
+    </sp_widget>
 </record_update>
